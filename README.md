@@ -16,4 +16,6 @@ in my unique style of programming as well as design/aesthetic.
 If you have any questions feel free to reach out via email listed above, or on my social media accounts listed below.  Thank you.
 
 https://youtube.com/@gamerdad_irl0629?si=-tps7Qk17_GgQrxC
+
+
 https://www.linkedin.com/in/erik-segura-15253778/
