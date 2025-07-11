@@ -35,17 +35,17 @@ Enemy makeEnemy(float xPos, float yPos)
 }
 
 // variable for speed of item or enemies
-    float speed = 200.f;
+    // float speed = 200.f;
 
-    sf::Clock myClock;
+    // sf::Clock myClock;
 
     // check to see if game over message is active
-    bool GO_Text_Active = false;
+    //bool GO_Text_Active = false;
 
 int main () {
-    // sf::renderwindow is also used once you are going to start drawing and rending objects within the window
-    sf::RenderWindow newWindow(sf::VideoMode(800, 800), "My Window");
-    newWindow.setPosition(sf::Vector2i(200, 125));
+    // // sf::renderwindow is also used once you are going to start drawing and rending objects within the window
+    // sf::RenderWindow newWindow(sf::VideoMode(800, 800), "My Window");
+    // newWindow.setPosition(sf::Vector2i(200, 125));
 
 //===========================================================================================================
 
@@ -53,19 +53,19 @@ int main () {
 
 //===========================================================================================================
 
-    std::vector<Enemy> enemies;
-    std::vector<Bullets> myBullets;
-    int numberOfEnemies = 10;
+    // std::vector<Enemy> enemies;
+    // std::vector<Bullets> myBullets;
+    // int numberOfEnemies = 10;
 
-    // create and seeding the random enemies and positions
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    // // create and seeding the random enemies and positions
+    // std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    for (int i = 0 ; i < numberOfEnemies; ++i)
-    {
-        float ranX = static_cast<float>(std::rand() % (800 - 70));
-        float ranY = static_cast<float>(std::rand() % (200));
-        enemies.push_back(makeEnemy(ranX + 20, ranY));
-    }
+    // for (int i = 0 ; i < numberOfEnemies; ++i)
+    // {
+    //     float ranX = static_cast<float>(std::rand() % (800 - 70));
+    //     float ranY = static_cast<float>(std::rand() % (200));
+    //     enemies.push_back(makeEnemy(ranX + 20, ranY));
+    // }
 
 //===========================================================================================================
 
@@ -133,21 +133,21 @@ int main () {
 //===========================================================================================================
 
     // This is for the sprite - BG
-    sf::Texture texture;
-    if (!texture.loadFromFile("space.png"))
-    {
-    return -1;
-    }
+    // sf::Texture texture;
+    // if (!texture.loadFromFile("space.png"))
+    // {
+    // return -1;
+    // }
 
-    // this is to repeat my texture
-    texture.setRepeated(true);
+    // // this is to repeat my texture
+    // texture.setRepeated(true);
 
-    // //create the sprite here with texture
-    sf::Sprite backGround;
-    backGround.setTexture(texture);
+    // // //create the sprite here with texture
+    // sf::Sprite backGround;
+    // backGround.setTexture(texture);
     
-    // // this is the correct way to set texture and repeat to fill the window size
-    backGround.setTextureRect(sf::IntRect(0,0,800,800));
+    // // // this is the correct way to set texture and repeat to fill the window size
+    // backGround.setTextureRect(sf::IntRect(0,0,800,800));
 
         
 //===========================================================================================================
@@ -170,50 +170,50 @@ int main () {
     // this where we check for events as long as the window remains open. 
     // THIS ALSO ACTS AS YOUR GAME LOOP
 
-    while (newWindow.isOpen())
-    {
-        sf::Event event;
+    // while (newWindow.isOpen())
+    // {
+    //     sf::Event event;
 
-        while (newWindow.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                std::cout << "This is now closed" << std::endl;
-                newWindow.close();
-            }
-                            // this is the projectile movement on trigger
-            if (event.type == sf::Event::KeyPressed)
-            {
-                if (!GO_Text_Active)
-                {
-                    if (event.key.code == sf::Keyboard::Space)
-                    {
-                        Bullets newBullet;
-                        sf::Vector2f blockPos = player.getPosition();
+    //     while (newWindow.pollEvent(event))
+    //     {
+    //         if (event.type == sf::Event::Closed)
+    //         {
+    //             std::cout << "This is now closed" << std::endl;
+    //             newWindow.close();
+    //         }
+    //                         // this is the projectile movement on trigger
+    //         if (event.type == sf::Event::KeyPressed)
+    //         {
+    //             if (!GO_Text_Active)
+    //             {
+    //                 if (event.key.code == sf::Keyboard::Space)
+    //                 {
+    //                     Bullets newBullet;
+    //                     sf::Vector2f blockPos = player.getPosition();
 
-                        newBullet.myBullet.setRadius(10.f);
-                        newBullet.myBullet.setFillColor(sf::Color::Yellow);
-                        newBullet.myBullet.setPosition(blockPos);
-                        newBullet.BulletVel = sf::Vector2f(0.f, -speed);
-                        newBullet.BulletActive = true;
+    //                     newBullet.myBullet.setRadius(10.f);
+    //                     newBullet.myBullet.setFillColor(sf::Color::Yellow);
+    //                     newBullet.myBullet.setPosition(blockPos);
+    //                     newBullet.BulletVel = sf::Vector2f(0.f, -speed);
+    //                     newBullet.BulletActive = true;
                         
-                        myBullets.push_back(newBullet);
+    //                     myBullets.push_back(newBullet);
 
-                        pew.play();
+    //                     pew.play();
 
-                        std::cout << "Bullet Fired!" << std::endl;
-                    }
-                }
-                else
-                {
-                    if (event.key.code == sf::Keyboard::Enter)
-                    {
-                        std::cout << "Window was closed by 'Enter Key'!" << std::endl;
-                        newWindow.close();
-                    }
-                }
-            }
-        }
+    //                     std::cout << "Bullet Fired!" << std::endl;
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 if (event.key.code == sf::Keyboard::Enter)
+    //                 {
+    //                     std::cout << "Window was closed by 'Enter Key'!" << std::endl;
+    //                     newWindow.close();
+    //                 }
+    //             }
+    //         }
+    //     }
         
 //===========================================================================================================
 
