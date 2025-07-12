@@ -1,6 +1,7 @@
 #include "App.h"
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
     //  Constructor here
 myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segura")
@@ -11,8 +12,16 @@ myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segu
 
     //Functions
 
-void myApp::loadAssets()
+void myApp::loadAssets() // this is to also load all assets needed
 {
+
+    // better practice to load all assets in one spot, makes more sense to me
+    // load my music
+    if (!myAudio.loadMusic)
+    {
+        /* code */
+    }
+    
     if (!texture.loadFromFile("space.png"))
     {
     return -1;
@@ -97,7 +106,7 @@ void myApp::runMe()
 
         // This is the loop check for hits on enemies from bullet to enemy
         //check for active game over text
-        if (!GO_Text_Active)
+        if (!goTextActive)
         {
             // This is for the movement of the player 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))

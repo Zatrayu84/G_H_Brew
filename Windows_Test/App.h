@@ -1,5 +1,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h"
@@ -19,7 +21,7 @@ private:
     float bulletSpeed = 200.f;
 
     //  Game Objects here
-    Player::myPlayer;
+    Player myPlayer;
     Audio myAudio;
     std::vector<Enemy> enemies;
     std::vector<Bullets> bullets;
