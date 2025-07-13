@@ -91,76 +91,45 @@ void myApp::runMe()
 {
     while (newWindow.isOpen())
     {
-        sf::Event event;
-
-        while (newWindow.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                std::cout << "This is now closed" << std::endl;
-                newWindow.close();
-            }
-                            // this is the projectile movement on trigger
-            if (event.type == sf::Event::KeyPressed)
-            {
-                if (!goTextActive)
-                {
-                    if (event.key.code == sf::Keyboard::Space)
-                    {
-                        Bullets newBullet;
-                        sf::Vector2f blockPos = player.getPosition();
-
-                        newBullet.myBullet.setRadius(10.f);
-                        newBullet.myBullet.setFillColor(sf::Color::Yellow);
-                        newBullet.myBullet.setPosition(blockPos);
-                        newBullet.BulletVel = sf::Vector2f(0.f, -speed);
-                        newBullet.BulletActive = true;
-                        
-                        myBullets.emplace_back(newBullet);
-
-                        pew.play();
-
-                        std::cout << "Bullet Fired!" << std::endl;
-                    }
-                }
-                else
-                {
-                    if (event.key.code == sf::Keyboard::Enter)
-                    {
-                        std::cout << "Window was closed by 'Enter Key'!" << std::endl;
-                        newWindow.close();
-                    }
-                }
-            }
-        }
         float deltaTime = myClock.restart().asSeconds();
-
-
-        // This is the loop check for hits on enemies from bullet to enemy
-        //check for active game over text
-        if (!goTextActive)
-        {
-            // This is for the movement of the player 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            {
-                player.move(-.5f, 0.f);  // this should allow movement to the left or negative x
-            }
-            
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            {
-                player.move(.5f, 0.f); // this should allow movement to the right or positive x
-            }
-            
-            // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            // {
-            //     player.move(0.f, -.5f); // this should allow movement to the right or positive x
-            // }
-
-            // if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            // {
-            //     player.move(0.f, .5f); // this should allow movement to the right or positive x
-            // }
-        }
+        handleEvents();
+        updateLogic(deltaTime);
+        render();
+    }
 }
+
+void myApp::handleEvents() 
+{
+    sf::Event event;
+    while (newWindow.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            std::cout << "This is now closed" << std::endl;
+            newWindow.close();
+        }
+        // this is the projectile movement on trigger
+        if (event.type == sf::Event::KeyPressed)
+        {
+            if (!goTextActive)
+            {
+                if (event.key.code == sf::Keyboard::Space)
+                {
+                    myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));
+                }
+            }
+            else
+            {
+                if (event.key.code == sf::Keyboard::Enter)
+                {
+                    std::cout << "Window was closed by 'Enter Key'!" << std::endl;
+                    newWindow.close();
+                }
+            }
+            
+        }
+    }
+}
+
 
 

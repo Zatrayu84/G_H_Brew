@@ -24,7 +24,7 @@ private:
     Player myPlayer;
     Audio myAudio;
     std::vector<Enemy> enemies;
-    std::vector<Bullets> bullets;
+    std::vector<Bullet> bullets;
 
     //  SFML assets
     sf::Sprite background;
