@@ -34,7 +34,7 @@ private:
 
     //  Helper methods for loading and intiailizing enemies
     void loadAssets();
-    void initializeEnemies();
+    void initializeEnemies(int count);
     void handleEvents();
     void updateLogic(float deltaTime);
     void render();

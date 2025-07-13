@@ -14,43 +14,75 @@ myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segu
 
 void myApp::loadAssets() // this is to also load all assets needed
 {
+//===========================================================================================================
+//  Audio
 
     // better practice to load all assets in one spot, makes more sense to me
     // load my music
-    if (!myAudio.loadMusic)
+    if (!myAudio.loadMusic("Title_Screen.wav"))
     {
-        /* code */
+        std::cout << "Error loading file." << std::endl;
     }
-    
+    myAudio.setMusicLoop(true);
+    myAudio.playMusic();
+
+    if (myAudio.loadSoundEffect("Pew__003.ogg", "pew"))
+    {
+        std::cout << "Error loading bullet sfx file." << std::endl;
+    }
+
+    if (myAudio.loadSoundEffect("Explosion2__007.ogg", "boom"))
+    {
+        std::cout << "Error loading explosion sfx file." << std::endl;
+    }
+
+    if (myAudio.loadSoundEffect("Starpower__001.ogg", "done"))
+    {
+        std::cout << "Error loading GameOver sfx file." << std::endl;
+    }
+
+//===========================================================================================================
+//  Load Fonts
+
+    if (!fontGameOver.loadFromFile("Space age.tff"))
+    {
+        std::cout << "Error loading GameOverFONT file." << std::endl;
+    }
+
+    // this is for the text to display while setting font settings too
+    textGameOver.setFont(fontGameOver);
+    textGameOver.setString("GAME OVER \n YOU WIN! \n Hit ENTER to \n close window.");
+    textGameOver.setCharacterSize(30);
+    textGameOver.setFillColor(sf::Color::Red);
+    textGameOver.setStyle(sf::Text::Bold);
+    textGameOver.setPosition((800/2) - 100, (800/2) - 50);
+
+//=========================================================================================================
+//  Textures - BG
+    //  load my textures here for BG
     if (!texture.loadFromFile("space.png"))
     {
-    return -1;
+        std::cout << "Error loading texture file." << std::endl;
     }
 
-    // this is to repeat my texture
     texture.setRepeated(true);
-
-    // //create the sprite here with texture
     sf::Sprite backGround;
     backGround.setTexture(texture);
-    
+
     // // this is the correct way to set texture and repeat to fill the window size
     backGround.setTextureRect(sf::IntRect(0,0,800,800));
 }
 
-void myApp::initializeEnemies()
+void myApp::initializeEnemies(int count)
 {
-    //  Enemy count is here
-    int numberOfEnemies = 10;
-
     // create and seeding the random enemies and positions
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    for (int i = 0 ; i < numberOfEnemies; ++i)
+    for (int i = 0 ; i < count; ++i)
     {
         float ranX = static_cast<float>(std::rand() % (800 - 70));
         float ranY = static_cast<float>(std::rand() % (200));
-        enemies.emplace_back(ranX + 20, ranY);
+        enemies.push_back(Enemy(ranX + 20, ranY));
     }
 }
 
