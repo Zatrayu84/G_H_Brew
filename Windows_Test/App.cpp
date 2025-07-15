@@ -195,14 +195,7 @@ void myApp::updateLogic(float deltaTime)
 
 void myApp::render()
 {
-    //  In between the clear call and the display call is where we send the render requests for our items
-
-        // this is to clear the windows out after all items have been rendered
-        newWindow.clear(sf::Color::Black); // <-- When we call clear this is also mandatory 
-                                          // this is calling the clear to draw the BG???
-
-        // small note, the order in which you draw items is reversed like the stack
-        // Last one in first one out
+        newWindow.clear(sf::Color::Blue); 
         newWindow.draw(background);
 
         // here is mu check for the game over text
@@ -223,9 +216,7 @@ void myApp::render()
         {
             newWindow.draw(textGameOver);
         }
-
-        // this is mandatory to actually draw what all has been called per ^^^ code
-        newWindow.display();  // <-- this is the command to display all rendered requests
+        newWindow.display();
 }
 
 
