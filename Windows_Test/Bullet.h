@@ -11,7 +11,7 @@ public:
 
     // my Function 
     void update(float deltaTime);
-    void draw(sf::RenderWindow &window);
+    void draw(sf::RenderWindow &window) const;
     sf::FloatRect getGlobalBounds() const;
     bool isActive() const;
     void deActivate();  //  going to use this for killing the bullet off screen

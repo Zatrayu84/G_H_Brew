@@ -9,7 +9,7 @@ Enemy::Enemy(float xPos, float yPos)
     myEnemy.setPosition(xPos, yPos);
 }
 
-void Enemy::Draw(sf::RenderWindow &window)
+void Enemy::draw(sf::RenderWindow &window) const
 {
     window.draw(myEnemy);
 }

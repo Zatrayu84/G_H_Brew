@@ -131,5 +131,103 @@ void myApp::handleEvents()
     }
 }
 
+void myApp::updateLogic(float deltaTime)
+{
+    if (!goTextActive)
+    {
+        // this is where my player moves
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+        myPlayer.move(-.5f, 0.f);  // this should allow movement to the left or negative x
+        }
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            myPlayer.move(.5f, 0.f); // this should allow movement to the right or positive x
+        }
+
+        //this is where my bullets update and detect collision
+        for (auto bulletIter = bullets.begin(); bulletIter != bullets.end();)
+        {
+            bulletIter->update(deltaTime);
+            if (!bulletIter->isActive())
+            {
+                bulletIter = bullets.erase(bulletIter);
+                continue;
+            }
+
+            bool collisionOccured = false;
+            for (auto enemyIter = enemies.begin(); enemyIter != enemies.end();)
+            {
+                if (bulletIter->getGlobalBounds().intersects(enemyIter->getGlobalBounds()))
+                {
+                    std::cout << "Collision has happened!" << std::endl;
+                    enemyIter = enemies.erase(enemyIter);
+                    myAudio.getSoundEffect("boom").play();
+                    bulletIter->deActivate();
+                    collisionOccured = true;
+                    break;
+                }
+                else
+                {
+                    ++enemyIter;
+                }
+            }
+            if (collisionOccured)
+            {
+                bulletIter = bullets.erase(bulletIter);
+            }
+            else
+            {
+                ++bulletIter;
+            }
+
+            // adding my game over check here
+            if (enemies.empty() && !goTextActive)
+            {
+                goTextActive = true;
+                myAudio.getSoundEffect("done").play();
+                std::cout << "Game Over, all enemies have been destroyed" << std::endl;
+            }
+        }
+    }
+}
+
+void myApp::render()
+{
+    //  In between the clear call and the display call is where we send the render requests for our items
+
+        // this is to clear the windows out after all items have been rendered
+        newWindow.clear(sf::Color::Black); // <-- When we call clear this is also mandatory 
+                                          // this is calling the clear to draw the BG???
+
+        // small note, the order in which you draw items is reversed like the stack
+        // Last one in first one out
+        newWindow.draw(background);
+
+        // here is mu check for the game over text
+        if (!goTextActive)
+        {
+            myPlayer.draw(newWindow);
+            // enemies
+            for (const auto& enemy : enemies)
+            {
+                enemy.draw(newWindow);
+            }
+            for (auto& bullet : bullets)
+            {
+                bullet.draw(newWindow);
+            }
+        }
+        else
+        {
+            newWindow.draw(textGameOver);
+        }
+
+        // this is mandatory to actually draw what all has been called per ^^^ code
+        newWindow.display();  // <-- this is the command to display all rendered requests
+}
+
+
 
 

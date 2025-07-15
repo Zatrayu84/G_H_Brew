@@ -23,7 +23,7 @@ void Bullet::update(float deltaTime)
     }
 }
 
-void Bullet::draw(sf::RenderWindow &window)
+void Bullet::draw(sf::RenderWindow &window) const
 {
     if (active)
     {

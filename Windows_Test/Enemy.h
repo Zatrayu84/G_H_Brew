@@ -8,7 +8,7 @@ public:
     Enemy(float xPos, float yPos);
 
     //  Functions go here
-    void Draw(sf::RenderWindow &window);
+    void draw(sf::RenderWindow &window) const;
     sf::FloatRect getGlobalBounds() const;
 
 private:
