@@ -32,7 +32,7 @@ void Player::shoot(std::vector<Bullet> &bullets, const sf::Sound &pewSound)
 {
     Bullet newBullet(myPlayer.getPosition());
     bullets.push_back(newBullet);
-    pewSound.play();
+    //pewSound.play();
     std::cout << "Bullet Fired!" << std::endl;
 }
 
