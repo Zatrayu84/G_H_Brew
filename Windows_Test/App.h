@@ -19,6 +19,7 @@ private:
     sf::Clock myClock;
     bool goTextActive = false;
     float bulletSpeed = 200.f;
+    int count = 10;
 
     //  Game Objects here
     Player myPlayer;
@@ -27,7 +28,7 @@ private:
     std::vector<Bullet> bullets;
 
     //  SFML assets
-    sf::Sprite background;
+    sf::Sprite backGround;
     sf::Text textGameOver;
     sf::Font fontGameOver;
     sf::Texture texture;

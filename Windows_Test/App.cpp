@@ -7,7 +7,7 @@
 myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segura")
 {
     newWindow.setPosition(sf::Vector2i(200, 125));
-
+    loadAssets();
 }
 
     //Functions
@@ -21,32 +21,32 @@ void myApp::loadAssets() // this is to also load all assets needed
     // load my music
     if (!myAudio.loadMusic("Audio/Title_Screen.wav"))
     {
-        std::cout << "Error loading file." << std::endl;
+        std::cout << "Error loading music file: Audio/Title_Screen.wav" << std::endl;
     }
     myAudio.setMusicLoop(true);
     myAudio.playMusic();
 
     if (!myAudio.loadSoundEffect("Audio/Pew__003.ogg", "pew"))
     {
-        std::cout << "Error loading bullet sfx file." << std::endl;
+        std::cout << "Error loading bullet sfx file: Audio/Pew__003.ogg" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/Explosion2__007.ogg", "boom"))
     {
-        std::cout << "Error loading explosion sfx file." << std::endl;
+        std::cout << "Error loading GameOverFONT file: Font/Space age.ttf" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/Starpower__001.ogg", "done"))
     {
-        std::cout << "Error loading GameOver sfx file." << std::endl;
+        std::cout << "Error loading background texture file: Sprites/space.png"  << std::endl;
     }
 
 //===========================================================================================================
 //  Load Fonts
 
-    if (!fontGameOver.loadFromFile("Font/Space age.tff"))
+    if (!fontGameOver.loadFromFile("Font/Space age.ttf"))
     {
-        std::cout << "Error loading GameOverFONT file." << std::endl;
+        std::cout << "Error loading GameOverFONT file: Font/Space age.ttf" << std::endl;
     }
 
     // this is for the text to display while setting font settings too
@@ -66,7 +66,7 @@ void myApp::loadAssets() // this is to also load all assets needed
     }
 
     texture.setRepeated(true);
-    sf::Sprite backGround;
+    //sf::Sprite backGround;
     backGround.setTexture(texture);
 
     // // this is the correct way to set texture and repeat to fill the window size
@@ -196,7 +196,7 @@ void myApp::updateLogic(float deltaTime)
 void myApp::render()
 {
         newWindow.clear(sf::Color::Black); 
-        newWindow.draw(background);
+        newWindow.draw(backGround);
 
         // here is mu check for the game over text
         if (!goTextActive)

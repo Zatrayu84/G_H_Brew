@@ -2,7 +2,7 @@
 #include <iostream>
 
     // this is initializing my bullet speed
-Bullet::Bullet(sf::Vector2f startPos) : active(true), bulletSpd(700.f)
+Bullet::Bullet(sf::Vector2f startPos) : active(true), bulletSpd(200.f)
 {
     myBullet.setRadius(10.f);
     myBullet.setFillColor(sf::Color::Yellow);
@@ -15,7 +15,7 @@ void Bullet::update(float deltaTime)
     if (active)
     {
         myBullet.move(bulletVel *deltaTime);
-        if(myBullet.getPosition().y >-20)
+        if(myBullet.getPosition().y > -20)
         {
             active = false;
             std::cout << "Bullet Removed (off-screen.)" << std::endl;
