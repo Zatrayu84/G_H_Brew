@@ -8,6 +8,7 @@ myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segu
 {
     newWindow.setPosition(sf::Vector2i(200, 125));
     loadAssets();
+    initializeEnemies(20);
 }
 
     //Functions
@@ -33,7 +34,7 @@ void myApp::loadAssets() // this is to also load all assets needed
 
     if (!myAudio.loadSoundEffect("Audio/Explosion2__007.ogg", "boom"))
     {
-        std::cout << "Error loading GameOverFONT file: Font/Space age.ttf" << std::endl;
+        std::cout << "Error loading GameOverFONT file: Audio/Explosion2__007.oog" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/Starpower__001.ogg", "done"))
@@ -44,9 +45,9 @@ void myApp::loadAssets() // this is to also load all assets needed
 //===========================================================================================================
 //  Load Fonts
 
-    if (!fontGameOver.loadFromFile("Font/Space age.ttf"))
+    if (!fontGameOver.loadFromFile("Font/space_age_font.ttf"))
     {
-        std::cout << "Error loading GameOverFONT file: Font/Space age.ttf" << std::endl;
+        std::cout << "Error loading GameOverFONT file: Font/space_age_font.ttf" << std::endl;
     }
 
     // this is for the text to display while setting font settings too

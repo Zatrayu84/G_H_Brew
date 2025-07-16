@@ -6,7 +6,7 @@ Bullet::Bullet(sf::Vector2f startPos) : active(true), bulletSpd(200.f)
 {
     myBullet.setRadius(10.f);
     myBullet.setFillColor(sf::Color::Yellow);
-    myBullet.setPosition(startPos.x + 20.f, startPos.y);
+    myBullet.setPosition(startPos.x + 50.f / 2 - myBullet.getRadius(), startPos.y - myBullet.getRadius());
     bulletVel = sf::Vector2f(0.f, -bulletSpd);
 }
 
@@ -14,8 +14,15 @@ void Bullet::update(float deltaTime)
 {
     if (active)
     {
-        myBullet.move(bulletVel *deltaTime);
-        if(myBullet.getPosition().y > -20)
+        myBullet.move(bulletVel * deltaTime);
+
+        //DEBUG messages
+        std::cout << "[BULLET DEBUG] Current Y: " << myBullet.getPosition().y 
+        << " | Condition myBullet().y < -50.f: " << (myBullet.getPosition().y < -50.f ? "TRUE" : "FALSE")
+        << std::endl;
+        // End of my debug messages
+
+        if(myBullet.getPosition().y < -50.f)
         {
             active = false;
             std::cout << "Bullet Removed (off-screen.)" << std::endl;

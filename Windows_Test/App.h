@@ -19,7 +19,6 @@ private:
     sf::Clock myClock;
     bool goTextActive = false;
     float bulletSpeed = 200.f;
-    int count = 10;
 
     //  Game Objects here
     Player myPlayer;
