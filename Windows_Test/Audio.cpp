@@ -37,12 +37,29 @@ bool Audio::loadSoundEffect(const std::string& filename, const std::string& effe
 
     // this is to load the sound effects to be used
     sf::SoundBuffer buffer;
-    if (!buffer.loadFromFile(filename)) {
-        std::cerr << "Error loading sound effect: " << filename << std::endl;
+
+    // --- ATTEMPTING TO FIX -  DEBUGGING CODE ---
+    std::cout << "Attempting to load sound effect: " << filename << " with key: " << effectName << std::endl;
+    // --- END DEBUGGING CODE ---
+
+    if (!buffer.loadFromFile(filename))
+    {
+
+    // --- ATTEMPTING TO FIX -  DEBUGGING CODE ---
+        std::cerr << "SFML failed to load sound effect from: " << filename << std::endl;
+        std::cerr << "Ensure file exists and path is correct relative to CWD." << std::endl;
+        // --- END DEBUGGING CODE ---
+
+        //std::cerr << "Error loading sound effect: " << filename << std::endl;
         return false;
     }
     soundBuffers[effectName] = buffer;
     soundEffects[effectName].setBuffer(soundBuffers[effectName]);
+
+     // --- ADD THIS DEBUGGING CODE ---
+    std::cout << "Successfully loaded sound effect: " << filename << " with key: " << effectName << std::endl;
+    // --- END DEBUGGING CODE ---
+    
     return true;
 }
 

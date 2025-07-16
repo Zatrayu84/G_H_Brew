@@ -36,7 +36,7 @@ void Player::shoot(std::vector<Bullet> &bullets, const sf::Sound &pewSound)
     std::cout << "Bullet Fired!" << std::endl;
 }
 
-void Player::draw(sf::RenderWindow &window)
+void Player::draw(sf::RenderWindow &window) const
 {
     window.draw(myPlayer);
 }

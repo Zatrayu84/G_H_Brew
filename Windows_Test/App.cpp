@@ -19,24 +19,24 @@ void myApp::loadAssets() // this is to also load all assets needed
 
     // better practice to load all assets in one spot, makes more sense to me
     // load my music
-    if (!myAudio.loadMusic("Title_Screen.wav"))
+    if (!myAudio.loadMusic("Audio/Title_Screen.wav"))
     {
         std::cout << "Error loading file." << std::endl;
     }
     myAudio.setMusicLoop(true);
     myAudio.playMusic();
 
-    if (myAudio.loadSoundEffect("Pew__003.ogg", "pew"))
+    if (!myAudio.loadSoundEffect("Audio/Pew__003.ogg", "pew"))
     {
         std::cout << "Error loading bullet sfx file." << std::endl;
     }
 
-    if (myAudio.loadSoundEffect("Explosion2__007.ogg", "boom"))
+    if (!myAudio.loadSoundEffect("Audio/Explosion2__007.ogg", "boom"))
     {
         std::cout << "Error loading explosion sfx file." << std::endl;
     }
 
-    if (myAudio.loadSoundEffect("Starpower__001.ogg", "done"))
+    if (!myAudio.loadSoundEffect("Audio/Starpower__001.ogg", "done"))
     {
         std::cout << "Error loading GameOver sfx file." << std::endl;
     }
@@ -44,7 +44,7 @@ void myApp::loadAssets() // this is to also load all assets needed
 //===========================================================================================================
 //  Load Fonts
 
-    if (!fontGameOver.loadFromFile("Space age.tff"))
+    if (!fontGameOver.loadFromFile("Font/Space age.tff"))
     {
         std::cout << "Error loading GameOverFONT file." << std::endl;
     }
@@ -60,7 +60,7 @@ void myApp::loadAssets() // this is to also load all assets needed
 //=========================================================================================================
 //  Textures - BG
     //  load my textures here for BG
-    if (!texture.loadFromFile("space.png"))
+    if (!texture.loadFromFile("Sprites/space.png"))
     {
         std::cout << "Error loading texture file." << std::endl;
     }
@@ -107,7 +107,7 @@ void myApp::handleEvents()
         {
             std::cout << "This is now closed" << std::endl;
             newWindow.close();
-        }
+        } 
         // this is the projectile movement on trigger
         if (event.type == sf::Event::KeyPressed)
         {
@@ -195,7 +195,7 @@ void myApp::updateLogic(float deltaTime)
 
 void myApp::render()
 {
-        newWindow.clear(sf::Color::Blue); 
+        newWindow.clear(sf::Color::Black); 
         newWindow.draw(background);
 
         // here is mu check for the game over text
