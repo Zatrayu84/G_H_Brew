@@ -8,7 +8,7 @@ myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segu
 {
     newWindow.setPosition(sf::Vector2i(200, 125));
     loadAssets();
-    initializeEnemies(10);
+    initializeEnemies(40);
 }
 
     //Functions
@@ -81,7 +81,33 @@ void myApp::loadAssets() // this is to also load all assets needed
 
 void myApp::initializeEnemies(int count)
 {
-    // create and seeding the random enemies and positions
+    enemies.clear();
+
+    // Parameters for the rows
+    const float startX = 20.0f;
+    const float startY = 20.0f;
+    const float enemySpacingX = 80.0f;
+    const float enemySpacingY = 70.0f;
+
+    const int enemiesPerRow = 10;
+    // Rows calculated here
+    const int numRows = (count + enemiesPerRow - 1) / enemiesPerRow;
+    // Loop to create the enemeis in a grid pattern
+    for (int i = 0; i < count; ++i)
+    {
+        // calculate the rows and columns based on my "i" index
+        int currentRow = i / enemiesPerRow;
+        int currentColumn = i % enemiesPerRow;
+
+        // Enemies X and Y positions
+        float enemyX = startX + (currentColumn * enemySpacingX);
+        float enemyY = startY + (currentRow * enemySpacingY);
+
+        enemies.push_back(Enemy(enemyX, enemyY)); // this creates my enemies
+    }
+    std::cout << "Initialized " << enemies.size() << " enemies in pattern." << std::endl;
+
+    /* // create and seeding the random enemies and positions
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     for (int i = 0 ; i < count; ++i)
@@ -89,7 +115,7 @@ void myApp::initializeEnemies(int count)
         float ranX = static_cast<float>(std::rand() % (800 - 70));
         float ranY = static_cast<float>(std::rand() % (200));
         enemies.push_back(Enemy(ranX + 20, ranY));
-    }
+    }*/
 }
 
 //  Here is my Game Manager

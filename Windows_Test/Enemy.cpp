@@ -2,7 +2,7 @@
 
 Enemy::Enemy(float xPos, float yPos)
 {
-    myEnemy.setRadius(20.f);
+    myEnemy.setRadius(10.f);
     myEnemy.setFillColor(sf::Color::Green);
     myEnemy.setOutlineThickness(1.0f);
     myEnemy.setOutlineColor(sf::Color::White);
