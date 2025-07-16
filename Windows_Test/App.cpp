@@ -8,7 +8,7 @@ myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segu
 {
     newWindow.setPosition(sf::Vector2i(200, 125));
     loadAssets();
-    initializeEnemies(20);
+    initializeEnemies(10);
 }
 
     //Functions
@@ -56,7 +56,12 @@ void myApp::loadAssets() // this is to also load all assets needed
     textGameOver.setCharacterSize(30);
     textGameOver.setFillColor(sf::Color::Red);
     textGameOver.setStyle(sf::Text::Bold);
-    textGameOver.setPosition((800/2) - 100, (800/2) - 50);
+    //  center my text
+    sf::FloatRect textBounds = textGameOver.getLocalBounds();
+    textGameOver.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+    float windowCenterX = 800.f / 2.0f;
+    float windowCenterY = 800.f / 2.0f;
+    textGameOver.setPosition(windowCenterX, windowCenterY);
 
 //=========================================================================================================
 //  Textures - BG
