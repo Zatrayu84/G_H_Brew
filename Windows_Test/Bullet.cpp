@@ -15,13 +15,6 @@ void Bullet::update(float deltaTime)
     if (active)
     {
         myBullet.move(bulletVel * deltaTime);
-
-        //DEBUG messages
-        std::cout << "[BULLET DEBUG] Current Y: " << myBullet.getPosition().y 
-        << " | Condition myBullet().y < -50.f: " << (myBullet.getPosition().y < -50.f ? "TRUE" : "FALSE")
-        << std::endl;
-        // End of my debug messages
-
         if(myBullet.getPosition().y < -50.f)
         {
             active = false;

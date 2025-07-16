@@ -64,19 +64,23 @@ void myApp::loadAssets() // this is to also load all assets needed
     textGameOver.setPosition(windowCenterX, windowCenterY);
 
 //=========================================================================================================
-//  Textures - BG
+//  Textures - BG, ENEMY
     //  load my textures here for BG
-    if (!texture.loadFromFile("Sprites/space.png"))
+    if (!textureBackground.loadFromFile("Sprites/space.png"))
     {
-        std::cout << "Error loading texture file." << std::endl;
+        std::cout << "Error loading texture file: Sprites/space.png" << std::endl;
     }
 
-    texture.setRepeated(true);
-    //sf::Sprite backGround;
-    backGround.setTexture(texture);
+    textureBackground.setRepeated(true);
+    backGround.setTexture(textureBackground);
 
     // // this is the correct way to set texture and repeat to fill the window size
     backGround.setTextureRect(sf::IntRect(0,0,800,800));
+
+    if (!enemyShipTexture.loadFromFile("Sprites/space_shuttle.png"))
+    {
+        std::cout << "Error loading texture file: Sprites/space_shuttle.png" << std::endl;
+    }
 }
 
 void myApp::initializeEnemies(int count)
@@ -103,7 +107,7 @@ void myApp::initializeEnemies(int count)
         float enemyX = startX + (currentColumn * enemySpacingX);
         float enemyY = startY + (currentRow * enemySpacingY);
 
-        enemies.push_back(Enemy(enemyX, enemyY)); // this creates my enemies
+        enemies.push_back(Enemy(enemyX, enemyY, enemyShipTexture)); // this creates my enemies
     }
     std::cout << "Initialized " << enemies.size() << " enemies in pattern." << std::endl;
 

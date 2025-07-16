@@ -1,20 +1,24 @@
 #include "Enemy.h"
 
-Enemy::Enemy(float xPos, float yPos)
+Enemy::Enemy(float xPos, float yPos, const sf::Texture& enemyTexture)
 {
-    myEnemy.setRadius(10.f);
-    myEnemy.setFillColor(sf::Color::Green);
-    myEnemy.setOutlineThickness(1.0f);
-    myEnemy.setOutlineColor(sf::Color::White);
-    myEnemy.setPosition(xPos, yPos);
+    enemySprite.setTexture(enemyTexture);
+    enemySprite.setRotation(180.0f);
+    float baseSize = 50.0f;
+    enemySprite.setScale(baseSize / enemyTexture.getSize().x, baseSize / enemyTexture.getSize().y);
+    enemySprite.setPosition(xPos, yPos);
 }
 
 void Enemy::draw(sf::RenderWindow &window) const
 {
-    window.draw(myEnemy);
+    window.draw(enemySprite);
 }
 
 sf::FloatRect Enemy::getGlobalBounds() const
 {
-    return myEnemy.getGlobalBounds();
+    return enemySprite.getGlobalBounds();
+}
+
+sf::Vector2f Enemy::getPosition() const{
+    return enemySprite.getPosition();
 }

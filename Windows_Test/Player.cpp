@@ -3,11 +3,11 @@
 
 Player::Player() : playerSpeed(0.5f)
 {
-    sf::RectangleShape player(sf::Vector2f(100.f, 100.f));
-    myPlayer.setSize(sf::Vector2f(50.f, 50.f));
-    myPlayer.setFillColor(sf::Color::Red);
-    myPlayer.setOutlineThickness(2.f);
-    myPlayer.setOutlineColor(sf::Color::White);
+    if (!playerTexture.loadFromFile("Sprites/ship.png"))
+    {
+        std::cout << "Error loading texture file." << std::endl;
+    }
+    myPlayer.setTexture(playerTexture);
     myPlayer.setPosition(20.f, 745.f);  //set location to bottom of screen
 }
 

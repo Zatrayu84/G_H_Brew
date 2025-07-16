@@ -19,6 +19,7 @@ public:
     sf::Vector2f getPosition() const;
 
 private:
-    sf::RectangleShape myPlayer;
+    sf::Texture playerTexture;
+    sf::Sprite myPlayer;
     float playerSpeed; // A member variable for player speed
 };

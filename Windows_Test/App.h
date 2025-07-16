@@ -30,7 +30,8 @@ private:
     sf::Sprite backGround;
     sf::Text textGameOver;
     sf::Font fontGameOver;
-    sf::Texture texture;
+    sf::Texture textureBackground;
+    sf::Texture enemyShipTexture;
 
     //  Helper methods for loading and intiailizing enemies
     void loadAssets();
