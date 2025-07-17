@@ -111,10 +111,10 @@ void myApp::initializeEnemies(int count)
     float offsetY = topOfScreen + enemyHeight;
 
     // need to make sure that my horizontal offset isn't offscreen
-    // if (offsetX < 0) 
-    // {
-    //     offsetX = 0;
-    // }
+    if (offsetX < 0) 
+    {
+        offsetX = 0;
+    }
 
     // Loop to create the enemeis in a now centered grid pattern
     for (int i = 0; i < count; ++i)
