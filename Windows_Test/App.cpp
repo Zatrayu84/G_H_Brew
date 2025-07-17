@@ -85,41 +85,55 @@ void myApp::loadAssets() // this is to also load all assets needed
 
 void myApp::initializeEnemies(int count)
 {
+    float enemyWidth = 50.f;
+    float enemyHeight = 50.f;
+    
     enemies.clear();
-
     // Parameters for the rows
-    const float startX = 20.0f;
-    const float startY = 20.0f;
-    const float enemySpacingX = 80.0f;
-    const float enemySpacingY = 70.0f;
+    const float enemySpacingX = enemyWidth + 30.0f;
+    const float enemySpacingY = enemyHeight + 20.0f;
 
     const int enemiesPerRow = 10;
+    
     // Rows calculated here
     const int numRows = (count + enemiesPerRow - 1) / enemiesPerRow;
-    // Loop to create the enemeis in a grid pattern
+
+    // code to get grid semi centered lots of maths
+    float totalGridWidth = (enemiesPerRow - 1) * enemySpacingX + enemyWidth;
+    float totalGridHeight = (numRows - 1) * enemySpacingY + enemyHeight;
+
+    float winWidth = 800.0f;
+    float offsetX = (winWidth - totalGridWidth) / 2.0f;
+
+    // this is the offset from the top of the window
+    float topOfScreen = 20.f;
+    float offsetY = topOfScreen + enemyHeight;
+
+    // need to make sure that my horizontal offset isn't offscreen
+    if (offsetX < 0) 
+    {
+        offsetX = 0;
+    }
+
+    // Loop to create the enemeis in a now centered grid pattern
     for (int i = 0; i < count; ++i)
     {
         // calculate the rows and columns based on my "i" index
         int currentRow = i / enemiesPerRow;
         int currentColumn = i % enemiesPerRow;
-
+        
         // Enemies X and Y positions
-        float enemyX = startX + (currentColumn * enemySpacingX);
-        float enemyY = startY + (currentRow * enemySpacingY);
+        float enemyX_Relative = (currentColumn * enemySpacingX);
+        float enemyY_Relative = (currentRow * enemySpacingY);
 
-        enemies.push_back(Enemy(enemyX, enemyY, enemyShipTexture)); // this creates my enemies
+        // centering in relation to my new grid parameters
+        float finalEnemyX = offsetX + enemyX_Relative;
+        float finalEnemyY = offsetY + enemyY_Relative;
+
+        // enemy positions and textures loaded
+        enemies.push_back(Enemy(finalEnemyX, finalEnemyY, enemyShipTexture)); // this creates my enemies
     }
     std::cout << "Initialized " << enemies.size() << " enemies in pattern." << std::endl;
-
-    /* // create and seeding the random enemies and positions
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
-
-    for (int i = 0 ; i < count; ++i)
-    {
-        float ranX = static_cast<float>(std::rand() % (800 - 70));
-        float ranY = static_cast<float>(std::rand() % (200));
-        enemies.push_back(Enemy(ranX + 20, ranY));
-    }*/
 }
 
 //  Here is my Game Manager
@@ -232,6 +246,7 @@ void myApp::updateLogic(float deltaTime)
 void myApp::render()
 {
         newWindow.clear(sf::Color::Black); 
+        newWindow.setView(newWindow.getDefaultView());
         newWindow.draw(backGround);
 
         // here is mu check for the game over text

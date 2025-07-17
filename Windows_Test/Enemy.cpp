@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include <iostream>
 
 Enemy::Enemy(float xPos, float yPos, const sf::Texture& enemyTexture)
 {
