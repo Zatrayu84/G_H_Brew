@@ -90,8 +90,8 @@ void myApp::initializeEnemies(int count)
     
     enemies.clear();
     // Parameters for the rows
-    const float enemySpacingX = enemyWidth + 30.0f;
-    const float enemySpacingY = enemyHeight + 20.0f;
+    const float enemySpacingX = enemyWidth + 10.0f;
+    const float enemySpacingY = enemyHeight; //+ 20.0f;
 
     const int enemiesPerRow = 10;
     
@@ -104,16 +104,17 @@ void myApp::initializeEnemies(int count)
 
     float winWidth = 800.0f;
     float offsetX = (winWidth - totalGridWidth) / 2.0f;
+    offsetX += 40.0f;
 
     // this is the offset from the top of the window
     float topOfScreen = 20.f;
     float offsetY = topOfScreen + enemyHeight;
 
     // need to make sure that my horizontal offset isn't offscreen
-    if (offsetX < 0) 
-    {
-        offsetX = 0;
-    }
+    // if (offsetX < 0) 
+    // {
+    //     offsetX = 0;
+    // }
 
     // Loop to create the enemeis in a now centered grid pattern
     for (int i = 0; i < count; ++i)
