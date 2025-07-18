@@ -2,13 +2,25 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <string>
+#include <sstream>
+
+// Helper function to split with delimeter
+std::vector<std::string> splitString(const std::string& s, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(s);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
 
     //  Constructor here
 myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segura"), myMainMenu(800,800), currentState(GameState::MainMenu)
 {
     newWindow.setPosition(sf::Vector2i(200, 125));
     loadAssets();
-    //initializeEnemies(40);
 }
 
     //Functions
@@ -51,22 +63,39 @@ void myApp::loadAssets() // this is to also load all assets needed
     }
 
     // this is for the text to display while setting font settings too
-    textGameOver.setFont(fontGameOver);
-    textGameOver.setString("GAME OVER \n YOU WIN! \n Press R to Restart \n Hit ESC to retirm to Main menu");
-    textGameOver.setCharacterSize(30);
-    textGameOver.setFillColor(sf::Color::Red);
-    textGameOver.setStyle(sf::Text::Bold);
-    //  center my text
-    sf::FloatRect textBounds = textGameOver.getLocalBounds();
 
-    //textGameOver.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+    std::string gameOverString = "YOU WIN! \n Press R to Restart \n Hit ESC to return to Main menu";
+    std::vector<std::string> lines = splitString(gameOverString, '\n');
 
-    textGameOver.setOrigin(textGameOver.getGlobalBounds().width / 2.0f, textGameOver.getGlobalBounds().width / 2.0f);
-    textGameOver.setPosition(newWindow.getSize().x / 2.f, newWindow.getSize().y / 2.f);
+    float charSize = 30.0f; // Character size for all lines
+    float lineHeight = charSize + 10.0f; // Approximate line height + padding
 
-    // float windowCenterX = 800.f / 2.0f;
-    // float windowCenterY = 800.f / 2.0f;
-    // textGameOver.setPosition(windowCenterX, windowCenterY);
+    // Calculate total height of the text block for vertical centering
+    float totalTextHeight = lines.size() * lineHeight;
+
+    // Calculate the Y position for the very top of the centered text block
+    float startY = (newWindow.getSize().y / 2.0f) - (totalTextHeight / 2.0f);
+
+    for (size_t i = 0; i < lines.size(); ++i)
+    {
+        sf::Text lineText;
+        lineText.setFont(fontGameOver);
+        lineText.setString(lines[i]);
+        lineText.setCharacterSize(static_cast<unsigned int>(charSize));
+        lineText.setFillColor(sf::Color::Red);
+        lineText.setStyle(sf::Text::Bold);
+
+        // Set origin to the center of THIS line's bounds
+        sf::FloatRect textBounds = lineText.getLocalBounds();
+        lineText.setOrigin(textBounds.left + textBounds.width / 2.0f,
+                           textBounds.top + textBounds.height / 2.0f);
+
+        // Position this line horizontally centered and vertically stacked
+        lineText.setPosition(newWindow.getSize().x / 2.0f,
+                             startY + (i * lineHeight) + (lineHeight / 2.0f)); // Add lineHeight/2.0f to center the line within its allocated vertical space
+
+        gameOverLines.push_back(lineText);
+    }
 
 //=========================================================================================================
 //  Textures - BG, ENEMY
@@ -86,7 +115,17 @@ void myApp::loadAssets() // this is to also load all assets needed
     {
         std::cout << "Error loading texture file: Sprites/space_shuttle.png" << std::endl;
     }
+    
+    if (!logoTexture.loadFromFile("Sprites/Galaga_Logo.png"))
+    {
+        std::cout << "Error loading texture file: Sprites/Galaga_Logo.png" << std::endl;
+    }
 
+    menuLogo.setTexture(logoTexture);
+    menuLogo.setScale(.5f, .5f);
+    sf::FloatRect logoBounds = menuLogo.getLocalBounds();
+    menuLogo.setOrigin(logoBounds.left + logoBounds.width / 2.0f, logoBounds.top + logoBounds.height / 2.0f);
+    menuLogo.setPosition(newWindow.getSize().x / 2.0f, newWindow.getSize().y / 4.0f);
     myPlayer.draw(newWindow);
 }
 
@@ -170,6 +209,7 @@ void myApp::handleEvents()
         // Handle input based on current game state
         if (event.type == sf::Event::KeyPressed)
         {
+            //  Here are where the game states are deermined
             if (currentState == GameState::MainMenu)
             {
                 if (event.key.code == sf::Keyboard::Up)
@@ -186,7 +226,7 @@ void myApp::handleEvents()
                     if (selectedItem == 0) // Play
                     {
                         currentState = GameState::Playing;
-                        initializeEnemies(40); // Start the game by initializing enemies
+                        initializeEnemies(enemyDef); // Start the game by initializing enemies
                         bullets.clear();
                         //myPlayer.reset(); // Reset player position for a new game
                     }
@@ -207,24 +247,37 @@ void myApp::handleEvents()
             }
             else if (currentState == GameState::Playing)
             {
+                
                 if (event.key.code == sf::Keyboard::Space)
-                myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));            
+                {
+                myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));   
+                }
+                else if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
+                {
+                    currentState = GameState::MainMenu;
+                    // You might want to reset game elements here if going back to menu
+                    enemies.clear();
+                    bullets.clear();
+                    //myPlayer.reset(); // Or place player off-screen
+                }         
             }
             else if (currentState == GameState::GameOver)
             {
                 if (event.key.code == sf::Keyboard::R) // Restart on 'R' key
                 {
                     currentState = GameState::Playing;
-                    initializeEnemies(40);
+                    initializeEnemies(enemyDef);
                     bullets.clear();
+                    myAudio.playMusic();
                     // myPlayer.reset();
                 }
-                 if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
+                else if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
                 {
                     currentState = GameState::MainMenu;
                     // You might want to reset game elements here if going back to menu
                     enemies.clear();
                     bullets.clear();
+                    myAudio.playMusic();
                     //myPlayer.reset(); // Or place player off-screen
                 }
             }
@@ -234,46 +287,14 @@ void myApp::handleEvents()
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            myPlayer.move(-5.0f, 0.0f);
+            myPlayer.move(-1.0f, 0.0f);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            myPlayer.move(5.0f, 0.0f);
+            myPlayer.move(1.0f, 0.0f);
         }
     }
 }
-// void myApp::handleEvents() 
-// {
-//     sf::Event event;
-//     while (newWindow.pollEvent(event))
-//     {
-//         if (event.type == sf::Event::Closed)
-//         {
-//             std::cout << "This is now closed" << std::endl;
-//             newWindow.close();
-//         } 
-//         // this is the projectile movement on trigger
-//         if (event.type == sf::Event::KeyPressed)
-//         {
-//             if (currentState == GameState::MainMenu)
-//             {
-//                 if (event.key.code == sf::Keyboard::Space)
-//                 {
-//                     myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));
-//                 }
-//             }
-//             else
-//             {
-//                 if (event.key.code == sf::Keyboard::Enter)
-//                 {
-//                     std::cout << "Window was closed by 'Enter Key'!" << std::endl;
-//                     newWindow.close();
-//                 }
-//             }
-            
-//         }
-//     }
-// }
 
 void myApp::updateLogic(float deltaTime)
 {
@@ -318,11 +339,10 @@ void myApp::updateLogic(float deltaTime)
             // adding my game over check here
             if (enemies.empty())
             {
-                currentState == GameState::GameOver;
+                currentState = GameState::GameOver;
                 myAudio.getSoundEffect("done").play();
                 myAudio.stopMusic();
                 std::cout << "Game Over, all enmies have been destroyed" << std::endl; // this is for terminal output
-                textGameOver.setString("You Win! \n Press R to restart \n Press ESC for Menu");
            }
         }
         //  Eventually add logic to handle player lives, and score reset.
@@ -338,6 +358,7 @@ void myApp::render()
         // here is mu check for the game over text
         if (currentState == GameState::MainMenu)
         {
+            newWindow.draw(menuLogo);
             myMainMenu.draw(newWindow);
         }
         else if (currentState == GameState::Playing)
@@ -355,7 +376,10 @@ void myApp::render()
         }
         else if(currentState == GameState::GameOver)
         {
-            newWindow.draw(textGameOver);
+            for (const auto& line : gameOverLines)
+        {
+            newWindow.draw(line);
+        }
         }
         newWindow.display();
 }

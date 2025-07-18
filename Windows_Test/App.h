@@ -26,9 +26,9 @@ private:
     //  variables for the game go here
     sf::RenderWindow newWindow;
     sf::Clock myClock;
-    //bool goTextActive = false;
     float bulletSpeed = 200.f;
     MainMenu myMainMenu;
+    int enemyDef = 1;
 
     //  Game Objects here
     Player myPlayer;
@@ -41,10 +41,12 @@ private:
 
     //  SFML assets
     sf::Sprite backGround;
-    sf::Text textGameOver;
+    sf::Sprite menuLogo;
+    std::vector<sf::Text> gameOverLines;
     sf::Font fontGameOver;
     sf::Texture textureBackground;
     sf::Texture enemyShipTexture;
+    sf::Texture logoTexture;
 
     //  Helper methods for loading and intiailizing enemies
     void loadAssets();
