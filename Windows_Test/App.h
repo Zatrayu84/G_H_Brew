@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Audio.h"
+#include "MainMenu.h"
 
 class myApp
 {
@@ -14,17 +15,29 @@ public:
     void runMe();
 
 private:  
+    //  Game States are here now
+    enum class GameState
+    {
+        MainMenu,
+        Playing,
+        GameOver
+    };
+    
     //  variables for the game go here
     sf::RenderWindow newWindow;
     sf::Clock myClock;
-    bool goTextActive = false;
+    //bool goTextActive = false;
     float bulletSpeed = 200.f;
+    MainMenu myMainMenu;
 
     //  Game Objects here
     Player myPlayer;
     Audio myAudio;
     std::vector<Enemy> enemies;
     std::vector<Bullet> bullets;
+
+    //  Set my Game State
+    GameState currentState;
 
     //  SFML assets
     sf::Sprite backGround;

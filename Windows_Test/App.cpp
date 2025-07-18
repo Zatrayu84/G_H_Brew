@@ -4,11 +4,11 @@
 #include <iostream>
 
     //  Constructor here
-myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segura")
+myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segura"), myMainMenu(800,800), currentState(GameState::MainMenu)
 {
     newWindow.setPosition(sf::Vector2i(200, 125));
     loadAssets();
-    initializeEnemies(40);
+    //initializeEnemies(40);
 }
 
     //Functions
@@ -52,16 +52,21 @@ void myApp::loadAssets() // this is to also load all assets needed
 
     // this is for the text to display while setting font settings too
     textGameOver.setFont(fontGameOver);
-    textGameOver.setString("GAME OVER \n YOU WIN! \n Hit ENTER to \n close window.");
+    textGameOver.setString("GAME OVER \n YOU WIN! \n Press R to Restart \n Hit ESC to retirm to Main menu");
     textGameOver.setCharacterSize(30);
     textGameOver.setFillColor(sf::Color::Red);
     textGameOver.setStyle(sf::Text::Bold);
     //  center my text
     sf::FloatRect textBounds = textGameOver.getLocalBounds();
-    textGameOver.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
-    float windowCenterX = 800.f / 2.0f;
-    float windowCenterY = 800.f / 2.0f;
-    textGameOver.setPosition(windowCenterX, windowCenterY);
+
+    //textGameOver.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+
+    textGameOver.setOrigin(textGameOver.getGlobalBounds().width / 2.0f, textGameOver.getGlobalBounds().width / 2.0f);
+    textGameOver.setPosition(newWindow.getSize().x / 2.f, newWindow.getSize().y / 2.f);
+
+    // float windowCenterX = 800.f / 2.0f;
+    // float windowCenterY = 800.f / 2.0f;
+    // textGameOver.setPosition(windowCenterX, windowCenterY);
 
 //=========================================================================================================
 //  Textures - BG, ENEMY
@@ -81,6 +86,8 @@ void myApp::loadAssets() // this is to also load all assets needed
     {
         std::cout << "Error loading texture file: Sprites/space_shuttle.png" << std::endl;
     }
+
+    myPlayer.draw(newWindow);
 }
 
 void myApp::initializeEnemies(int count)
@@ -91,7 +98,7 @@ void myApp::initializeEnemies(int count)
     enemies.clear();
     // Parameters for the rows
     const float enemySpacingX = enemyWidth + 10.0f;
-    const float enemySpacingY = enemyHeight; //+ 20.0f;
+    const float enemySpacingY = enemyHeight;
 
     const int enemiesPerRow = 10;
     
@@ -149,42 +156,117 @@ void myApp::runMe()
     }
 }
 
-void myApp::handleEvents() 
+void myApp::handleEvents()
 {
     sf::Event event;
     while (newWindow.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
         {
-            std::cout << "This is now closed" << std::endl;
             newWindow.close();
-        } 
-        // this is the projectile movement on trigger
+            std::cout << "This is now closed" << std::endl;
+        }
+
+        // Handle input based on current game state
         if (event.type == sf::Event::KeyPressed)
         {
-            if (!goTextActive)
+            if (currentState == GameState::MainMenu)
             {
-                if (event.key.code == sf::Keyboard::Space)
+                if (event.key.code == sf::Keyboard::Up)
                 {
-                    myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));
+                    myMainMenu.moveUp();
                 }
-            }
-            else
-            {
+                if (event.key.code == sf::Keyboard::Down)
+                {
+                    myMainMenu.movedown();
+                }
                 if (event.key.code == sf::Keyboard::Enter)
                 {
-                    std::cout << "Window was closed by 'Enter Key'!" << std::endl;
-                    newWindow.close();
+                    int selectedItem = myMainMenu.MainMenuPressed();
+                    if (selectedItem == 0) // Play
+                    {
+                        currentState = GameState::Playing;
+                        initializeEnemies(40); // Start the game by initializing enemies
+                        myPlayer.reset(); // Reset player position for a new game
+                        bullets.clear(); // Clear any old bullets
+                    }
+                    else if (selectedItem == 1) // Options - implement later if needed
+                    {
+                        std::cout << "Options selected!" << std::endl;
+                    }
+                    else if (selectedItem == 2) // About - implement later if needed
+                    {
+                        std::cout << "About selected!" << std::endl;
+                    }
+                    else if (selectedItem == 3) // Exit
+                    {
+                        newWindow.close();
+                        std::cout << "Exiting from menu." << std::endl;
+                    }
                 }
             }
-            
+            else if (currentState == GameState::Playing)
+            {
+                // Your existing game input handling for player and bullets
+                myPlayer.handleInput(event, myAudio, bullets); // Assuming this creates bullets
+            }
+            else if (currentState == GameState::GameOver)
+            {
+                if (event.key.code == sf::Keyboard::R) // Restart on 'R' key
+                {
+                    currentState = GameState::Playing;
+                    initializeEnemies(40);
+                    myPlayer.reset();
+                    bullets.clear();
+                }
+                 if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
+                {
+                    currentState = GameState::MainMenu;
+                    // You might want to reset game elements here if going back to menu
+                    enemies.clear();
+                    bullets.clear();
+                    myPlayer.reset(); // Or place player off-screen
+                }
+            }
         }
     }
 }
+// void myApp::handleEvents() 
+// {
+//     sf::Event event;
+//     while (newWindow.pollEvent(event))
+//     {
+//         if (event.type == sf::Event::Closed)
+//         {
+//             std::cout << "This is now closed" << std::endl;
+//             newWindow.close();
+//         } 
+//         // this is the projectile movement on trigger
+//         if (event.type == sf::Event::KeyPressed)
+//         {
+//             if (currentState == GameState::MainMenu)
+//             {
+//                 if (event.key.code == sf::Keyboard::Space)
+//                 {
+//                     myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));
+//                 }
+//             }
+//             else
+//             {
+//                 if (event.key.code == sf::Keyboard::Enter)
+//                 {
+//                     std::cout << "Window was closed by 'Enter Key'!" << std::endl;
+//                     newWindow.close();
+//                 }
+//             }
+            
+//         }
+//     }
+// }
 
 void myApp::updateLogic(float deltaTime)
 {
-    if (!goTextActive)
+    if (currentState == GameState::Playing)
     {
         // this is where my player moves
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
