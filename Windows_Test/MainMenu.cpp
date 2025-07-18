@@ -11,32 +11,33 @@ MainMenu::MainMenu(float width, float height)
     // menus: Play, Options, About, Exit
     // Menu selections / some dummy selections included play will work to start game.
 
-    //play
-    mainMenu[0].setFont(font);
-    mainMenu[0].setFillColor(sf::Color::White);
-    mainMenu[0].setString("Play");
-    mainMenu[0].setCharacterSize(70);
-    mainMenu[0].setPosition(400, 100);
-    //options
-    mainMenu[1].setFont(font);
-    mainMenu[1].setFillColor(sf::Color::White);
-    mainMenu[1].setString("Options");
-    mainMenu[1].setCharacterSize(70);
-    mainMenu[1].setPosition(400, 200);
-    //About
-    mainMenu[2].setFont(font);
-    mainMenu[2].setFillColor(sf::Color::White);
-    mainMenu[2].setString("About");
-    mainMenu[2].setCharacterSize(70);
-    mainMenu[2].setPosition(400, 300);
-    //Exit
-    mainMenu[3].setFont(font);
-    mainMenu[3].setFillColor(sf::Color::White);
-    mainMenu[3].setString("Exit");
-    mainMenu[3].setCharacterSize(70);
-    mainMenu[3].setPosition(400, 400);
+    //Loop to create my menu items
+    for (int i = 0; i < Max_main_menu; ++i)
+    {
+        mainMenu[i].setFont(font);
+        mainMenu[i].setFillColor(sf::Color::White);
+        mainMenu[i].setCharacterSize(50);
+    }
 
-    MainMenuSelected = -1;
+    //play
+    mainMenu[0].setString("Play");
+    mainMenu[0].setPosition(width / 2, height / (Max_main_menu + 2) * 1.5f); // Adjusted for better spacing
+    mainMenu[0].setOrigin(mainMenu[0].getGlobalBounds().width / 2, mainMenu[0].getGlobalBounds().height / 2);
+    //options
+    mainMenu[1].setString("Options");
+    mainMenu[1].setPosition(width / 2, height / (Max_main_menu + 2) * 2.5f); // Adjusted for better spacing
+    mainMenu[1].setOrigin(mainMenu[1].getGlobalBounds().width / 2, mainMenu[1].getGlobalBounds().height / 2);
+    //About
+    mainMenu[2].setString("About");
+    mainMenu[2].setPosition(width / 2, height / (Max_main_menu + 2) * 3.5f); // Adjusted for better spacing
+    mainMenu[2].setOrigin(mainMenu[2].getGlobalBounds().width / 2, mainMenu[2].getGlobalBounds().height / 2);
+    //Exit
+    mainMenu[3].setString("Exit");
+    mainMenu[3].setPosition(width / 2, height / (Max_main_menu + 2) * 4.5f); // Adjusted for better spacing
+    mainMenu[3].setOrigin(mainMenu[3].getGlobalBounds().width / 2, mainMenu[3].getGlobalBounds().height / 2);
+    //Default
+    MainMenuSelected = -0;
+    mainMenu[MainMenuSelected].setFillColor(sf::Color::Blue);
 }
 
 MainMenu::~MainMenu()
@@ -57,7 +58,7 @@ void MainMenu::draw(sf::RenderWindow &window)
 // going up
 void MainMenu::moveUp()
 {
-    if (!MainMenuSelected - 1 >= 0)
+    if (MainMenuSelected - 1 >= 0)
     {
         mainMenu[MainMenuSelected].setFillColor(sf::Color::White);
         MainMenuSelected--;
@@ -73,7 +74,7 @@ void MainMenu::moveUp()
 
 void MainMenu::movedown()
 {
-    if (!MainMenuSelected + 1 <= Max_main_menu)
+    if (MainMenuSelected + 1 < Max_main_menu)
     {
         mainMenu[MainMenuSelected].setFillColor(sf::Color::White);
         MainMenuSelected++;

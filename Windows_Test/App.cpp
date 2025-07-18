@@ -187,14 +187,14 @@ void myApp::handleEvents()
                     {
                         currentState = GameState::Playing;
                         initializeEnemies(40); // Start the game by initializing enemies
-                        myPlayer.reset(); // Reset player position for a new game
-                        bullets.clear(); // Clear any old bullets
+                        bullets.clear();
+                        //myPlayer.reset(); // Reset player position for a new game
                     }
-                    else if (selectedItem == 1) // Options - implement later if needed
+                    else if (selectedItem == 1) // Options - implement later 
                     {
                         std::cout << "Options selected!" << std::endl;
                     }
-                    else if (selectedItem == 2) // About - implement later if needed
+                    else if (selectedItem == 2) // About - implement later 
                     {
                         std::cout << "About selected!" << std::endl;
                     }
@@ -207,8 +207,8 @@ void myApp::handleEvents()
             }
             else if (currentState == GameState::Playing)
             {
-                // Your existing game input handling for player and bullets
-                myPlayer.handleInput(event, myAudio, bullets); // Assuming this creates bullets
+                if (event.key.code == sf::Keyboard::Space)
+                myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));            
             }
             else if (currentState == GameState::GameOver)
             {
@@ -216,8 +216,8 @@ void myApp::handleEvents()
                 {
                     currentState = GameState::Playing;
                     initializeEnemies(40);
-                    myPlayer.reset();
                     bullets.clear();
+                    // myPlayer.reset();
                 }
                  if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
                 {
@@ -225,9 +225,20 @@ void myApp::handleEvents()
                     // You might want to reset game elements here if going back to menu
                     enemies.clear();
                     bullets.clear();
-                    myPlayer.reset(); // Or place player off-screen
+                    //myPlayer.reset(); // Or place player off-screen
                 }
             }
+        }
+    }
+    if (currentState == GameState::Playing)
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            myPlayer.move(-5.0f, 0.0f);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            myPlayer.move(5.0f, 0.0f);
         }
     }
 }
@@ -268,17 +279,6 @@ void myApp::updateLogic(float deltaTime)
 {
     if (currentState == GameState::Playing)
     {
-        // this is where my player moves
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-        myPlayer.move(-.5f, 0.f);  // this should allow movement to the left or negative x
-        }
-        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            myPlayer.move(.5f, 0.f); // this should allow movement to the right or positive x
-        }
-
         //this is where my bullets update and detect collision
         for (auto bulletIter = bullets.begin(); bulletIter != bullets.end();)
         {
@@ -316,13 +316,16 @@ void myApp::updateLogic(float deltaTime)
             }
 
             // adding my game over check here
-            if (enemies.empty() && !goTextActive)
+            if (enemies.empty())
             {
-                goTextActive = true;
+                currentState == GameState::GameOver;
                 myAudio.getSoundEffect("done").play();
-                std::cout << "Game Over, all enemies have been destroyed" << std::endl;
-            }
+                myAudio.stopMusic();
+                std::cout << "Game Over, all enmies have been destroyed" << std::endl; // this is for terminal output
+                textGameOver.setString("You Win! \n Press R to restart \n Press ESC for Menu");
+           }
         }
+        //  Eventually add logic to handle player lives, and score reset.
     }
 }
 
@@ -333,7 +336,11 @@ void myApp::render()
         newWindow.draw(backGround);
 
         // here is mu check for the game over text
-        if (!goTextActive)
+        if (currentState == GameState::MainMenu)
+        {
+            myMainMenu.draw(newWindow);
+        }
+        else if (currentState == GameState::Playing)
         {
             myPlayer.draw(newWindow);
             // enemies
@@ -346,7 +353,7 @@ void myApp::render()
                 bullet.draw(newWindow);
             }
         }
-        else
+        else if(currentState == GameState::GameOver)
         {
             newWindow.draw(textGameOver);
         }
