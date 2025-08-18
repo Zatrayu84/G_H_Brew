@@ -28,7 +28,7 @@ private:
     sf::Clock myClock;
     float bulletSpeed = 200.f;
     MainMenu myMainMenu;
-    int enemyDef = 1;
+    int enemyDef = 30;
 
     //  Game Objects here
     Player myPlayer;
