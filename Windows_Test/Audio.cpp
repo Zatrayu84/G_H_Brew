@@ -7,7 +7,7 @@ Audio::Audio()
     //  this is for my constructor
 }
 
-    //  This is where I load music and sound effexts to be played in game
+    //  This is where I load music and sound effects to be played in game
 bool Audio::loadMusic(const std::string &fileName)
 {
     if (!gameMusic.openFromFile(fileName))
@@ -31,6 +31,11 @@ void Audio::stopMusic()
 void Audio::setMusicLoop(bool loop)
 { 
     gameMusic.setLoop(loop);
+}
+
+void Audio::setVolume(float volume)
+{
+    gameMusic.setVolume(volume);
 }
 
 bool Audio::loadSoundEffect(const std::string& filename, const std::string& effectName) {

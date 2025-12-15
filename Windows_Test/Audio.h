@@ -13,6 +13,7 @@ public:
     bool loadMusic(const std::string &fileName);
     void playMusic();
     void stopMusic();
+    void setVolume(float volume);
     void setMusicLoop(bool loop);
 
     bool loadSoundEffect(const std::string & fileName, const std::string & effectName);

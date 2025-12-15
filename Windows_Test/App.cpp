@@ -37,6 +37,7 @@ void myApp::loadAssets() // this is to also load all assets needed
         std::cout << "Error loading music file: Audio/Title_Screen.wav" << std::endl;
     }
     myAudio.setMusicLoop(true);
+    myAudio.setVolume(20.0f);
     myAudio.playMusic();
 
     if (!myAudio.loadSoundEffect("Audio/Pew__003.ogg", "pew"))
