@@ -4,20 +4,26 @@
 Enemy::Enemy(float xPos, float yPos, const sf::Texture& enemyTexture)
 {
     enemySprite.setTexture(enemyTexture);
-    enemySprite.setRotation(180.0f);
+
     float baseSize = 50.0f;
     enemySprite.setScale(baseSize / enemyTexture.getSize().x, baseSize / enemyTexture.getSize().y);
+
+    sf::Vector2u texSize = enemyTexture.getSize();
+    enemySprite.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
+
+    enemySprite.setRotation(180.0f);
+
     enemySprite.setPosition(xPos, yPos);
 }
 
 bool Enemy::canShoot()
 {
-    return shootTimer.getElapsedTime().asSeconds() <= shootCooldown;
+    return shootTimer.getElapsedTime().asSeconds() >= shootCooldown;
 }
 
 void Enemy::shoot(std::vector<Bullet> &bullets, sf::Sound &pewSound,const sf::Vector2f& targetPos)
 {
-    Bullet newBullet(enemySprite.getPosition(), targetPos);
+    Bullet newBullet(getPosition(), targetPos);
     bullets.push_back(newBullet);
     pewSound.play();
     std::cout << "Enemy Bullet Fired!" << std::endl;
@@ -34,6 +40,7 @@ sf::FloatRect Enemy::getGlobalBounds() const
     return enemySprite.getGlobalBounds();
 }
 
-sf::Vector2f Enemy::getPosition() const{
+sf::Vector2f Enemy::getPosition() const
+{
     return enemySprite.getPosition();
 }

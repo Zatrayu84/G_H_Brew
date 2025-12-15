@@ -9,6 +9,7 @@ float vectorLength(const sf::Vector2f& vec)
     return std::sqrt(vec.x * vec.x + vec.y * vec.y);
 }
 
+    // this is initializing the creation of the enemy bullets
 Bullet::Bullet(sf::Vector2f startPos, sf::Vector2f targetPos) : active(true), bulletSpd(300.f)
 {
     myBullet.setRadius(5.f); // smaller to show enemy shot
@@ -30,7 +31,7 @@ Bullet::Bullet(sf::Vector2f startPos, sf::Vector2f targetPos) : active(true), bu
     }
 }
 
-    // this is initializing my bullet speed
+    // this is initializing my bullet creation for the player
 Bullet::Bullet(sf::Vector2f startPos) : active(true), bulletSpd(200.f)
 {
     myBullet.setRadius(10.f);

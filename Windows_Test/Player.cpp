@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player() : playerSpeed(0.5f)
+Player::Player() : playerSpeed(0.25f)
 {
     if (!playerTexture.loadFromFile("Sprites/ship.png"))
     {

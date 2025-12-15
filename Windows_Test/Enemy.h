@@ -22,4 +22,5 @@ public:
     sf::FloatRect getGlobalBounds() const;
     sf::Vector2f getPosition() const;
     bool canShoot(); // here we verify if enemy can shoot based on timer
+    sf::Vector2f getCenter();
 };

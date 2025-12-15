@@ -37,7 +37,7 @@ void myApp::loadAssets() // this is to also load all assets needed
         std::cout << "Error loading music file: Audio/Title_Screen.wav" << std::endl;
     }
     myAudio.setMusicLoop(true);
-    myAudio.setVolume(20.0f);
+    myAudio.setVolume(5.0f);
     myAudio.playMusic();
 
     if (!myAudio.loadSoundEffect("Audio/Pew__003.ogg", "pew"))
@@ -163,7 +163,7 @@ void myApp::initializeEnemies(int count)
         offsetX = 0;
     }
 
-    // Loop to create the enemeis in a now centered grid pattern
+    // Loop to create the enemies in a now centered grid pattern
     for (int i = 0; i < count; ++i)
     {
         // calculate the rows and columns based on my "i" index
@@ -318,7 +318,7 @@ void myApp::updateLogic(float deltaTime)
             {
                 if (bulletIter->getGlobalBounds().intersects(enemyIter->getGlobalBounds()))
                 {
-                    std::cout << "Collision has happened!" << std::endl;
+                    std::cout << "Enemy hit by player!" << std::endl;
                     enemyIter = enemies.erase(enemyIter);
                     myAudio.getSoundEffect("boom").play();
                     bulletIter->deActivate();
@@ -349,14 +349,15 @@ void myApp::updateLogic(float deltaTime)
            }
         }
 
-        sf::Vector2f playerPos = myPlayer.getPosition(); // Get the current player position
+        sf::Vector2f playerTopLeft = myPlayer.getPosition(); // Get the current player position
+        sf::Vector2f playerCenter = playerTopLeft + sf::Vector2f(25.0f, 25.0f);
         for (auto& enemy : enemies)
         {
             // The enemy must have the canShoot() and updated shoot(...) methods implemented
             if (enemy.canShoot())
             {
-                // Note: The shoot() function must now accept the target position (playerPos)
-                enemy.shoot(enemyBullets, myAudio.getSoundEffect("pew"), playerPos);
+                // this is shooting towards the center of the player / for visual look
+                enemy.shoot(enemyBullets, myAudio.getSoundEffect("pew"), playerCenter);
             }
         }
 
