@@ -8,15 +8,21 @@ Enemy::Enemy(float xPos, float yPos, const sf::Texture& enemyTexture)
     float baseSize = 50.0f;
     enemySprite.setScale(baseSize / enemyTexture.getSize().x, baseSize / enemyTexture.getSize().y);
 
+    // Here I had to change my texture scale before rotating it the 180 deg
     sf::Vector2u texSize = enemyTexture.getSize();
     enemySprite.setOrigin(texSize.x / 2.0f, texSize.y / 2.0f);
-
     enemySprite.setRotation(180.0f);
-
     enemySprite.setPosition(xPos, yPos);
+
+    //timer set for random shooting
+    float minTimer = 0.5f;
+    float maxTimer = 3.0f;
+    shootCooldown = minTimer + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX) / (maxTimer - minTimer));
+
+    shootTimer.restart();
 }
 
-bool Enemy::canShoot()
+bool Enemy::canShoot() const
 {
     return shootTimer.getElapsedTime().asSeconds() >= shootCooldown;
 }

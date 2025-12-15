@@ -10,7 +10,7 @@ private:
     sf::Sprite enemySprite;
     // Adding timer for enemy shooting timing
     sf::Clock shootTimer;
-    float shootCooldown = 2.0f;  // this is going to be measured in seconds
+    float shootCooldown;  // this is going to be measured in seconds
 
 public:
     // Constructor here
@@ -21,6 +21,6 @@ public:
     void shoot(std::vector<Bullet> &bullets, sf::Sound &pewSound,const sf::Vector2f& targetPos);
     sf::FloatRect getGlobalBounds() const;
     sf::Vector2f getPosition() const;
-    bool canShoot(); // here we verify if enemy can shoot based on timer
+    bool canShoot() const; // here we verify if enemy can shoot based on timer
     sf::Vector2f getCenter();
 };

@@ -19,6 +19,7 @@ std::vector<std::string> splitString(const std::string& s, char delimiter) {
     //  Constructor here
 myApp::myApp() : newWindow(sf::VideoMode(800, 800), "Galaga_HomeBrew - Erik Segura"), myMainMenu(800,800), currentState(GameState::MainMenu)
 {
+    std::srand(std::time(nullptr));
     newWindow.setPosition(sf::Vector2i(200, 125));
     loadAssets();
 }
