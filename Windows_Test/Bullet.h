@@ -7,7 +7,8 @@ class Bullet
 {
 public:
     //Constructor
-    Bullet(sf::Vector2f startPos);
+    Bullet(sf::Vector2f startPos);  // this is for the enemy shooting up
+    Bullet(sf::Vector2f startPos, sf::Vector2f targetPos); // this is for the enemy shooting towards player
 
     // my Function 
     void update(float deltaTime);

@@ -228,6 +228,7 @@ void myApp::handleEvents()
                         currentState = GameState::Playing;
                         initializeEnemies(enemyDef); // Start the game by initializing enemies
                         bullets.clear();
+                        enemyBullets.clear();
                         //myPlayer.reset(); // Reset player position for a new game
                     }
                     else if (selectedItem == 1) // Options - implement later 
@@ -245,21 +246,20 @@ void myApp::handleEvents()
                     }
                 }
             }
-            else if (currentState == GameState::Playing)
-            {
-                
+            else if (currentState == GameState::Playing) {
                 if (event.key.code == sf::Keyboard::Space)
                 {
-                myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));   
+                    myPlayer.shoot(bullets, myAudio.getSoundEffect("pew"));
                 }
                 else if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
                 {
                     currentState = GameState::MainMenu;
-                    // You might want to reset game elements here if going back to menu
+                    // reset game elements here if going back to menu
                     enemies.clear();
                     bullets.clear();
-                    //myPlayer.reset(); // Or place player off-screen
-                }         
+                    enemyBullets.clear();
+                    //myPlayer.reset();
+                }
             }
             else if (currentState == GameState::GameOver)
             {
@@ -268,6 +268,7 @@ void myApp::handleEvents()
                     currentState = GameState::Playing;
                     initializeEnemies(enemyDef);
                     bullets.clear();
+                    enemyBullets.clear();
                     myAudio.playMusic();
                     // myPlayer.reset();
                 }
@@ -277,6 +278,7 @@ void myApp::handleEvents()
                     // You might want to reset game elements here if going back to menu
                     enemies.clear();
                     bullets.clear();
+                    enemyBullets.clear();
                     myAudio.playMusic();
                     //myPlayer.reset(); // Or place player off-screen
                 }
@@ -342,8 +344,45 @@ void myApp::updateLogic(float deltaTime)
                 currentState = GameState::GameOver;
                 myAudio.getSoundEffect("done").play();
                 myAudio.stopMusic();
-                std::cout << "Game Over, all enmies have been destroyed" << std::endl; // this is for terminal output
+                std::cout << "Game Over, all enemies have been destroyed" << std::endl; // this is for terminal output
            }
+        }
+
+        sf::Vector2f playerPos = myPlayer.getPosition(); // Get the current player position
+        for (auto& enemy : enemies)
+        {
+            // The enemy must have the canShoot() and updated shoot(...) methods implemented
+            if (enemy.canShoot())
+            {
+                // Note: The shoot() function must now accept the target position (playerPos)
+                enemy.shoot(enemyBullets, myAudio.getSoundEffect("pew"), playerPos);
+            }
+        }
+
+        // this is the iterator to check my collisions
+        for (auto enemyBulletIter = enemyBullets.begin(); enemyBulletIter != enemyBullets.end();)
+        {
+            enemyBulletIter->update(deltaTime);
+
+            // Check for Player Collision OR if bullet is off-screen/inactive
+            if (!enemyBulletIter->isActive() ||
+                enemyBulletIter->getGlobalBounds().intersects(myPlayer.getGlobalBounds()))
+            {
+                // Check if edge of area was reached
+                if (enemyBulletIter->getGlobalBounds().intersects(myPlayer.getGlobalBounds()))
+                {
+                    std::cout << "Player HIT by enemy bullet!" << std::endl;
+                    myAudio.getSoundEffect("boom").play(); // Use the explosion sound
+                }
+
+                // Remove the bullet from the vector
+                enemyBulletIter = enemyBullets.erase(enemyBulletIter);
+            }
+            else
+            {
+                // No collision and bullet is still active, move to the next bullet
+                ++enemyBulletIter;
+            }
         }
         //  Eventually add logic to handle player lives, and score reset.
     }
@@ -370,6 +409,10 @@ void myApp::render()
                 enemy.draw(newWindow);
             }
             for (auto& bullet : bullets)
+            {
+                bullet.draw(newWindow);
+            }
+            for (auto& bullet : enemyBullets)
             {
                 bullet.draw(newWindow);
             }

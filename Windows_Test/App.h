@@ -34,7 +34,8 @@ private:
     Player myPlayer;
     Audio myAudio;
     std::vector<Enemy> enemies;
-    std::vector<Bullet> bullets;
+    std::vector<Bullet> bullets; // this is the player bullet
+    std::vector<Bullet> enemyBullets; // this is the enemy bullets
 
     //  Set my Game State
     GameState currentState;

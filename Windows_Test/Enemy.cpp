@@ -10,6 +10,20 @@ Enemy::Enemy(float xPos, float yPos, const sf::Texture& enemyTexture)
     enemySprite.setPosition(xPos, yPos);
 }
 
+bool Enemy::canShoot()
+{
+    return shootTimer.getElapsedTime().asSeconds() <= shootCooldown;
+}
+
+void Enemy::shoot(std::vector<Bullet> &bullets, sf::Sound &pewSound,const sf::Vector2f& targetPos)
+{
+    Bullet newBullet(enemySprite.getPosition(), targetPos);
+    bullets.push_back(newBullet);
+    pewSound.play();
+    std::cout << "Enemy Bullet Fired!" << std::endl;
+    shootTimer.restart(); // this is my timer reset
+}
+
 void Enemy::draw(sf::RenderWindow &window) const
 {
     window.draw(enemySprite);
