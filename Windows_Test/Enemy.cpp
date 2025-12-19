@@ -15,8 +15,8 @@ Enemy::Enemy(float xPos, float yPos, const sf::Texture& enemyTexture)
     enemySprite.setPosition(xPos, yPos);
 
     //timer set for random shooting
-    float minTimer = 0.5f;
-    float maxTimer = 3.0f;
+    float minTimer = 1.0f;
+    float maxTimer = 8.0f;
     shootCooldown = minTimer + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX) / (maxTimer - minTimer));
 
     shootTimer.restart();

@@ -367,17 +367,21 @@ void myApp::updateLogic(float deltaTime)
         {
             enemyBulletIter->update(deltaTime);
 
-            // Check for Player Collision OR if bullet is off-screen/inactive
-            if (!enemyBulletIter->isActive() ||
-                enemyBulletIter->getGlobalBounds().intersects(myPlayer.getGlobalBounds()))
+            // Check if edge of area was reached
+            if (enemyBulletIter->getGlobalBounds().intersects(myPlayer.getGlobalBounds()))
             {
-                // Check if edge of area was reached
-                if (enemyBulletIter->getGlobalBounds().intersects(myPlayer.getGlobalBounds()))
-                {
-                    std::cout << "Player HIT by enemy bullet!" << std::endl;
-                    myAudio.getSoundEffect("boom").play(); // Use the explosion sound
-                }
+                std::cout << "Player HIT by enemy bullet!" << std::endl;
+                myAudio.getSoundEffect("boom").play(); // Use the explosion sound
+                currentState = GameState::GameOver;
+                enemies.clear();
+                myAudio.stopMusic();
+                myAudio.getSoundEffect("done").play();
 
+                enemyBulletIter = enemyBullets.erase(enemyBulletIter);
+                break;
+            }
+            else if (!enemyBulletIter->isActive())
+            {
                 // Remove the bullet from the vector
                 enemyBulletIter = enemyBullets.erase(enemyBulletIter);
             }
