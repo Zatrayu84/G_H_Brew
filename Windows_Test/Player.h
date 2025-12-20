@@ -15,6 +15,7 @@ public:
     void move(float offsetX, float offsetY);
     void shoot(std::vector<Bullet> &bullets, sf::Sound &pewSound);
     void draw(sf::RenderWindow &window) const;
+    void reset();
     sf::FloatRect getGlobalBounds() const;
     sf::Vector2f getPosition() const;
 

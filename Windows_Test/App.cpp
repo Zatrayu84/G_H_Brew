@@ -38,7 +38,7 @@ void myApp::loadAssets() // this is to also load all assets needed
         std::cout << "Error loading music file: Audio/Title_Screen.wav" << std::endl;
     }
     myAudio.setMusicLoop(true);
-    myAudio.setVolume(5.0f);
+    myAudio.setVolume(20.0f);
     myAudio.playMusic();
 
     if (!myAudio.loadSoundEffect("Audio/Pew__003.ogg", "pew"))
@@ -48,12 +48,22 @@ void myApp::loadAssets() // this is to also load all assets needed
 
     if (!myAudio.loadSoundEffect("Audio/Explosion2__007.ogg", "boom"))
     {
-        std::cout << "Error loading GameOverFONT file: Audio/Explosion2__007.oog" << std::endl;
+                std::cout << "Error loading bullet sfx file: Audio/Explosion2__007.ogg" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/Starpower__001.ogg", "done"))
     {
-        std::cout << "Error loading background texture file: Sprites/space.png"  << std::endl;
+        std::cout << "Error loading bullet sfx file: Audio/Starpower__001.ogg" << std::endl;
+    }
+
+    if (!myAudio.loadSoundEffect("Audio/WIN.wav", "win"))
+    {
+        std::cout << "Error loading bullet sfx file: Audio/WIN.wav" << std::endl;
+    }
+
+    if (!myAudio.loadSoundEffect("Audio/lose.wav", "lose"))
+    {
+        std::cout << "Error loading bullet sfx file: Audio/lose.wav" << std::endl;
     }
 
 //===========================================================================================================
@@ -260,7 +270,7 @@ void myApp::handleEvents()
                     enemies.clear();
                     bullets.clear();
                     enemyBullets.clear();
-                    //myPlayer.reset();
+                    myPlayer.reset();
                 }
             }
             else if (currentState == GameState::GameOver)
@@ -272,7 +282,7 @@ void myApp::handleEvents()
                     bullets.clear();
                     enemyBullets.clear();
                     myAudio.playMusic();
-                    // myPlayer.reset();
+                    myPlayer.reset();
                 }
                 else if (event.key.code == sf::Keyboard::Escape) // Back to main menu on 'Escape'
                 {
@@ -282,7 +292,7 @@ void myApp::handleEvents()
                     bullets.clear();
                     enemyBullets.clear();
                     myAudio.playMusic();
-                    //myPlayer.reset(); // Or place player off-screen
+                    myPlayer.reset(); // Or place player off-screen
                 }
             }
         }
@@ -321,6 +331,7 @@ void myApp::updateLogic(float deltaTime)
                 {
                     std::cout << "Enemy hit by player!" << std::endl;
                     enemyIter = enemies.erase(enemyIter);
+                    myAudio.getSoundEffect("boom").setVolume(25.0f);
                     myAudio.getSoundEffect("boom").play();
                     bulletIter->deActivate();
                     collisionOccured = true;
@@ -343,7 +354,17 @@ void myApp::updateLogic(float deltaTime)
             // adding my game over check here
             if (enemies.empty())
             {
+                if (!gameOverLines.empty())
+                {
+                    gameOverLines[0].setString("You WIN!");
+                    sf::FloatRect textBounds = gameOverLines[0].getLocalBounds();
+                    gameOverLines[0].setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+                }
+
                 currentState = GameState::GameOver;
+                myAudio.getSoundEffect("win").setVolume(120.0f);
+                myAudio.getSoundEffect("win").play();
+                myAudio.getSoundEffect("done").setVolume(15.0f);
                 myAudio.getSoundEffect("done").play();
                 myAudio.stopMusic();
                 std::cout << "Game Over, all enemies have been destroyed" << std::endl; // this is for terminal output
@@ -371,11 +392,23 @@ void myApp::updateLogic(float deltaTime)
             if (enemyBulletIter->getGlobalBounds().intersects(myPlayer.getGlobalBounds()))
             {
                 std::cout << "Player HIT by enemy bullet!" << std::endl;
+                myAudio.getSoundEffect("boom").setVolume(25.0f);
                 myAudio.getSoundEffect("boom").play(); // Use the explosion sound
+
+                if (!gameOverLines.empty())
+                {
+                    gameOverLines[0].setString("You Lose!");
+                    sf::FloatRect textBounds = gameOverLines[0].getLocalBounds();
+                    gameOverLines[0].setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+                }
+
                 currentState = GameState::GameOver;
+                myAudio.getSoundEffect("lose").setVolume(120.0f);
+                myAudio.getSoundEffect("lose").play();
+                myAudio.getSoundEffect("done").setVolume(15.0f);
+                myAudio.getSoundEffect("done").play();
                 enemies.clear();
                 myAudio.stopMusic();
-                myAudio.getSoundEffect("done").play();
 
                 enemyBulletIter = enemyBullets.erase(enemyBulletIter);
                 break;
