@@ -48,22 +48,32 @@ void myApp::loadAssets() // this is to also load all assets needed
 
     if (!myAudio.loadSoundEffect("Audio/Explosion2__007.ogg", "boom"))
     {
-                std::cout << "Error loading bullet sfx file: Audio/Explosion2__007.ogg" << std::endl;
+        std::cout << "Error loading explosion sfx file: Audio/Explosion2__007.ogg" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/Starpower__001.ogg", "done"))
     {
-        std::cout << "Error loading bullet sfx file: Audio/Starpower__001.ogg" << std::endl;
+        std::cout << "Error loading wineffect sfx file: Audio/Starpower__001.ogg" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/WIN.wav", "win"))
     {
-        std::cout << "Error loading bullet sfx file: Audio/WIN.wav" << std::endl;
+        std::cout << "Error loading win sfx file: Audio/WIN.wav" << std::endl;
     }
 
     if (!myAudio.loadSoundEffect("Audio/lose.wav", "lose"))
     {
-        std::cout << "Error loading bullet sfx file: Audio/lose.wav" << std::endl;
+        std::cout << "Error loading lose sfx file: Audio/lose.wav" << std::endl;
+    }
+
+    if (!myAudio.loadSoundEffect("Audio/options.ogg", "option"))
+    {
+        std::cout << "Error loading options sfx file: Audio/options.ogg" << std::endl;
+    }
+
+    if (!myAudio.loadSoundEffect("Audio/credits.ogg", "credit"))
+    {
+        std::cout << "Error loading credits sfx file: Audio/options.ogg" << std::endl;
     }
 
 //===========================================================================================================
@@ -246,10 +256,14 @@ void myApp::handleEvents()
                     else if (selectedItem == 1) // Options - implement later 
                     {
                         std::cout << "Options selected!" << std::endl;
+                        myAudio.getSoundEffect("option").setVolume(100.0);
+                        myAudio.getSoundEffect("option").play();
                     }
                     else if (selectedItem == 2) // About - implement later 
                     {
-                        std::cout << "About selected!" << std::endl;
+                        std::cout << "Credits selected!" << std::endl;
+                        myAudio.getSoundEffect("credit").setVolume(100.0);
+                        myAudio.getSoundEffect("credit").play();
                     }
                     else if (selectedItem == 3) // Exit
                     {

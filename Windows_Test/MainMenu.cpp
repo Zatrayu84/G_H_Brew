@@ -28,7 +28,7 @@ MainMenu::MainMenu(float width, float height)
     mainMenu[1].setPosition(width / 2, height / (Max_main_menu + 4) * 4.0f); // Adjusted for better spacing
     mainMenu[1].setOrigin(mainMenu[1].getGlobalBounds().width / 2, mainMenu[1].getGlobalBounds().height / 2);
     //About
-    mainMenu[2].setString("About");
+    mainMenu[2].setString("Credits");
     mainMenu[2].setPosition(width / 2, height / (Max_main_menu + 4) * 4.5f); // Adjusted for better spacing
     mainMenu[2].setOrigin(mainMenu[2].getGlobalBounds().width / 2, mainMenu[2].getGlobalBounds().height / 2);
     //Exit
@@ -37,7 +37,7 @@ MainMenu::MainMenu(float width, float height)
     mainMenu[3].setOrigin(mainMenu[3].getGlobalBounds().width / 2, mainMenu[3].getGlobalBounds().height / 2);
     //Default
     MainMenuSelected = -0;
-    mainMenu[MainMenuSelected].setFillColor(sf::Color::Blue);
+    mainMenu[MainMenuSelected].setFillColor(sf::Color::Red);
 }
 
 MainMenu::~MainMenu()
@@ -62,13 +62,13 @@ void MainMenu::moveUp()
     {
         mainMenu[MainMenuSelected].setFillColor(sf::Color::White);
         MainMenuSelected--;
-        mainMenu[MainMenuSelected].setFillColor(sf::Color::Blue);
+        mainMenu[MainMenuSelected].setFillColor(sf::Color::Red);
     }
     else
     {
         mainMenu[MainMenuSelected].setFillColor(sf::Color::White);
         MainMenuSelected = Max_main_menu - 1;
-        mainMenu[MainMenuSelected].setFillColor(sf::Color::Blue); 
+        mainMenu[MainMenuSelected].setFillColor(sf::Color::Red);
     }
 }
 
@@ -78,12 +78,12 @@ void MainMenu::movedown()
     {
         mainMenu[MainMenuSelected].setFillColor(sf::Color::White);
         MainMenuSelected++;
-        mainMenu[MainMenuSelected].setFillColor(sf::Color::Blue);
+        mainMenu[MainMenuSelected].setFillColor(sf::Color::Red);
     }
     else
     {
         mainMenu[MainMenuSelected].setFillColor(sf::Color::White);
         MainMenuSelected = 0;
-        mainMenu[MainMenuSelected].setFillColor(sf::Color::Blue); 
+        mainMenu[MainMenuSelected].setFillColor(sf::Color::Red);
     }
 }
