@@ -49,7 +49,7 @@ private:
     sf::Texture enemyShipTexture;
     sf::Texture logoTexture;
 
-    //  Helper methods for loading and intiailizing enemies
+    //  Helper methods for loading and initializing enemies
     void loadAssets();
     void initializeEnemies(int count);
     void handleEvents();
